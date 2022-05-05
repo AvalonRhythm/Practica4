@@ -7,6 +7,8 @@ import helper
 import time
 from urllib.parse import unquote
 
+
+
 ##########################################################################################################
 
 def make_entry(parent, caption, width=None, **options):
@@ -113,8 +115,11 @@ def create_folder():
 
 ##########################################################################################################
 
+
+
 def check_credentials(event= None):
-    egela.check_credentials(username, password)
+    #OBTENER CON .get() EL USER Y PASS DE LOS CAMPOS DE TEXTO DE LA GUI
+    egela.check_credentials(username.get(), password.get())
 
 def on_selecting1(event):
     global selected_items1
