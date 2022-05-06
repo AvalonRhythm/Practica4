@@ -160,7 +160,7 @@ egela = eGela.eGela(root)
 login_frame = tk.Frame(root, padx=10, pady=10)
 login_frame.pack(fill=tk.BOTH, expand=True)
 
-username = make_entry(login_frame, "User name:", 16)
+username = make_entry(login_frame, "LDAP:", 16)
 password = make_entry(login_frame, "Password:", 16, show="*")
 password.bind("<Return>", check_credentials)
 
@@ -169,7 +169,8 @@ button.pack(side=tk.BOTTOM)
 
 root.mainloop()
 
-if not egela._login:
+if egela._login==0:
+    print(egela._login)
     exit()
 # Si nos logeamos en eGela cogemos las referencias a los pdfs
 pdfs = egela.get_pdf_refs()
