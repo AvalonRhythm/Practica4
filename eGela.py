@@ -17,8 +17,7 @@ class eGela:
     _cookie = ""
     _refs = []
     _root = None
-    _cookie=-1
-    _pagina="mierda" #almacena la pagina principal de egela
+
     _tieneSisWeb=False # variable que indica si está matriculado en sisweb
 
     def __init__(self, root):
@@ -177,29 +176,26 @@ class eGela:
             messagebox.showinfo("INFORMACIÓN", "\n Autenticado como: " + str(_pagina.find('span', class_="usertext mr-1").text))
 
             # ACTUALIZAR LAS VARIABLES
+            self._pagina=_pagina
             self._login = 1
-            _login=1
             self._cookie = cookie
-            _cookie=1
             self._root.destroy()
 
         except:
-            messagebox.showinfo("Alert Message", "Login incorrect!")
+            messagebox.showinfo("Alert Message", "Login incorrecto!")
 
-        print(_login)
-        return _pagina
 
     def get_pdf_refs(self):
         popup, progress_var, progress_bar = helper.progress("get_pdf_refs", "Downloading PDF list...")
         progress = 0
         progress_var.set(progress)
         progress_bar.update()
-        print(_pagina)
+        tieneSisWeb = False
+
 
         #HAY QUE AÑADIR LA ULTIMA PAGINA DE EGELA
-
-        print("\n --- Estos son los cursos actuales de " + str(_pagina.find('span', class_="usertext mr-1").text)  + " ---")
-        for h3 in _pagina.find_all("h3", class_="coursename"):  # OBTENER TODOS LOS CAMPOS coursename DE EGELA
+        print("\n --- Estos son los cursos actuales de " + str(self._pagina.find('span', class_="usertext mr-1").text)  + " ---")
+        for h3 in self._pagina.find_all("h3", class_="coursename"):  # OBTENER TODOS LOS CAMPOS coursename DE EGELA
             a = h3.find("a")  # EXTRAER LA CLAUSULA <a></a>
             nombreCurso = a.getText()
             link = a["href"]
@@ -218,7 +214,7 @@ class eGela:
             metodo = 'GET'
             uri = cursoSisWeb
             cabeceras = {'Host': 'egela.ehu.eus',
-                         'Cookie': _cookie}
+                         'Cookie': self._cookie}
             cuerpo = ''
             print(metodo + " --> " + uri)
             print(cuerpo)
@@ -248,7 +244,7 @@ class eGela:
 
             progress=0
             progress_var.set(progress) #inicializar la barra de progreso a 0
-            progress_step = float(100.0 / len(numeroDePDFs)) #calcular lo que sube la barra por cada pdf descargado
+            progress_step = float(100 / numeroDePDFs) #calcular lo que sube la barra por cada pdf descargado
 
 
             # --> OBTENER EL PAR DE (nombrePDF, enlacePDF):
@@ -283,17 +279,15 @@ class eGela:
 
         popup.destroy()
         print(self._refs)
-        return self._refs
 
-'''
+
     def get_pdf(self, selection):
 
-        print("\t##### descargando  PDF... #####")
-        print("\n##### 5. PETICION --> obtener el pdf #####")
+        print("\n##### 6. PETICION --> obtener el pdf #####")
         metodo = 'GET'
         uri = pdf
         cabeceras = {'Host': 'egela.ehu.eus',
-                     'Cookie': cookie}
+                     'Cookie': self._cookie}
         cuerpo = ''
         print(metodo + " --> " + uri)
         print(cuerpo)
@@ -311,12 +305,12 @@ class eGela:
 
 
 
-        # Peticion 7 (redireccionamiento --> obtener cada pdf)
-        print("\n\n--------------------------- PETICION 7 -----------------------------")
+        # Peticion 6.2 (redireccionamiento --> obtener cada pdf)
+        print("\n##### 6.2 PETICION --> obtener el pdf #####")
         metodo = 'GET'
         uri = respuesta.headers['Location']
         cabeceras = {'Host': 'egela.ehu.eus',
-                     'Cookie': cookie}
+                     'Cookie': self._cookie}
         cuerpo = ''
         print(metodo + " --> " + uri)
         print(cuerpo)
@@ -334,4 +328,3 @@ class eGela:
         # print(cuerpo)
 
         return pdf_name, pdf_content
-'''

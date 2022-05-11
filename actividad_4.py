@@ -169,10 +169,11 @@ button.pack(side=tk.BOTTOM)
 
 root.mainloop()
 
+
 if egela._login==0:
-    print(egela._login)
     exit()
 # Si nos logeamos en eGela cogemos las referencias a los pdfs
+
 pdfs = egela.get_pdf_refs()
 
 ##########################################################################################################
