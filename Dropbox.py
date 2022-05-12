@@ -54,27 +54,63 @@ class Dropbox:
         return auth_code
 
     def do_oauth(self):
-        #############################################
-        # RELLENAR CON CODIGO DE LAS PETICIONES HTTP
-        # Y PROCESAMIENTO DE LAS RESPUESTAS HTTP
-        # PARA LA OBTENCION DEL ACCESS TOKEN
-        #############################################
+        uri = 'https://www.dropbox.com/oauth2/authorize'
+        params = {'response_type': 'code',
+                  'client_id': app_key,
+                  'redirect_uri': redirect_uri}
 
+        params_encoded = urllib.urlencode(params)
+        webbrowser.open(uri + '?' + params_encoded)
+
+        print('/oauth2/authorize')
+        auth_code = self.local_server()
+        print('auth_code: ' + auth_code)
+
+        # Codigo de autorizacion para acceder al token
+        uri = 'https://api.dropboxapi.com/oauth2/token'
+        cabecera = {'Host:': 'api.dropboxapi.com',
+                    'Content-Type': 'application/x-www-form-urlencoded'}
+        data = {'code': auth_code,
+                'client_id': app_key,
+                'client_secret': app_secret,
+                'redirect_uri': redirect_uri,
+                'grant_type': 'authorization_code'}
+        respuesta = requests.post(uri, headers=cabecera, data=data, allow_redirects=False)
+
+        status = respuesta.status_code
+        print('Status: ' + str(status))
+        content = respuesta.text
+        print('Content: \n' + str(content))
+        content_json = json.loads(content)
+        access_token = content_json['access_token']
+        print('access_token: ' + access_token)
+
+        self._access_token = access_token
         self._root.destroy()
 
     def list_folder(self, msg_listbox):
         print("/list_folder")
         uri = 'https://api.dropboxapi.com/2/files/list_folder'
         # https://www.dropbox.com/developers/documentation/http/documentation#files-list_folder
-        #############################################
-        # RELLENAR CON CODIGO DE LA PETICION HTTP
-        # Y PROCESAMIENTO DE LA RESPUESTA HTTP
-        #############################################
-        contenido_json=""
 
+        if self._path == '/':
+            path = ''
+        else:
+            path = self._path
 
+        data = {'path': path}
+        data_encoded = json.dumps(data)
+        cabecera = {'Host': 'api.dropboxapi.com',
+                    'Authorization': 'Bearer ' + self._access_token,
+                    'Content-Type': 'application/json'}
+        respuesta = requests.post(uri, headers=cabecera, data=data_encoded, allow_redirects=False)
+        status = respuesta.status_code
+        print('Status: ' + str(status))
+        content = respuesta.text
+        print('Content: \n' + str(content))
+        content_json = json.loads(content)
 
-        self._files = helper.update_listbox2(msg_listbox, self._path, contenido_json)
+        self._files = helper.update_listbox2(msg_listbox, self._path, content_json)
 
     def transfer_file(self, file_path, file_data):
         metodo="X"

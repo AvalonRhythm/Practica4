@@ -284,7 +284,7 @@ class eGela:
 
         print("\n##### 6. PETICION --> obtener el pdf #####")
         metodo = 'GET'
-        uri = pdf
+        uri = selection
         cabeceras = {'Host': 'egela.ehu.eus',
                      'Cookie': self._cookie}
         cuerpo = ''
@@ -323,7 +323,7 @@ class eGela:
         for cabecera in respuesta.headers:
             if cabecera=='Location' or cabecera=='Set-Cookie':
                 print(cabecera + ": " + respuesta.headers[cabecera])
-        cuerpo = respuesta.content
+        pdf_content = respuesta.content
         # print(cuerpo)
 
         return pdf_name, pdf_content
