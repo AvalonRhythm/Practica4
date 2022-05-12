@@ -5,8 +5,8 @@ from socket import AF_INET, socket, SOCK_STREAM
 import json
 import helper
 
-app_key = ''
-app_secret = ''
+app_key = '0d5chasx4cc0mwx'
+app_secret = 'el8k82hfxqc0x4d'
 server_addr = "localhost"
 server_port = 8090
 redirect_uri = "http://" + server_addr + ":" + str(server_port)
@@ -77,13 +77,17 @@ class Dropbox:
         self._files = helper.update_listbox2(msg_listbox, self._path, contenido_json)
 
     def transfer_file(self, file_path, file_data):
+        metodo="X"
         print("/upload")
         uri = 'https://content.dropboxapi.com/2/files/upload'
         # https://www.dropbox.com/developers/documentation/http/documentation#files-upload
-        #############################################
-        # RELLENAR CON CODIGO DE LA PETICION HTTP
-        # Y PROCESAMIENTO DE LA RESPUESTA HTTP
-        #############################################
+        cabeceras = {}
+        print("-- METODO UPLOAD --")
+        print(metodo + " --> " + uri)
+
+        respuesta = requests.request(metodo, uri, headers=cabeceras, allow_redirects=False)
+        print("\n ++++++ respuesta +++++")
+        print(str(respuesta.status_code) + " " + respuesta.reason)
 
     def delete_file(self, file_path):
         print("/delete_file")

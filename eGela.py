@@ -40,7 +40,7 @@ class eGela:
             ldap = username
             passwd = password
 
-            print("######## 1. PETICION --> index de egela obtener token ########")
+            print("\n\n######## 1. PETICION --> index de egela obtener token ########")
             metodo = 'GET'
             uri = "https://egela.ehu.eus/login/index.php"
             cabeceras = {'Host': 'egela.ehu.eus'}
@@ -51,7 +51,7 @@ class eGela:
             respuesta = requests.request(metodo, uri, headers=cabeceras, data=cuerpo, allow_redirects=False)
             codigo = respuesta.status_code
             descripcion = respuesta.reason
-            print("\n\n++++++++ respuesta: ++++++++")
+            print("\n++++++++ respuesta: ++++++++")
             print(str(codigo) + " " + descripcion)  # CODIGO DE RESPUESTA Y SIGNIFICADO
             for cabecera in respuesta.headers:
                 if cabecera == 'Location' or cabecera == 'Set-Cookie':
@@ -76,7 +76,7 @@ class eGela:
             #########################################################
 
 
-            print("##### 2. PETICION --> logeo en index (obtener testsesion) #####")
+            print("\n\n##### 2. PETICION --> logeo en index (obtener testsesion) #####")
             metodo = 'POST'
             uri = redireccion
             cabeceras = {'Host': 'egela.ehu.eus',
@@ -89,12 +89,11 @@ class eGela:
             cuerpo_encoded = urllib.parse.urlencode(cuerpo)
             cabeceras['Content-Lenght'] = str(len(cuerpo))
             print(metodo + " --> " + uri)
-            print(cuerpo)
 
             respuesta = requests.request(metodo, uri, headers=cabeceras, data=cuerpo, allow_redirects=False)
             codigo = respuesta.status_code
             descripcion = respuesta.reason
-            print("\n\n++++++++ respuesta: ++++++++")
+            print("\n++++++++ respuesta: ++++++++")
             print(str(codigo) + " " + descripcion)
             for cabecera in respuesta.headers:
                 if cabecera == 'Location' or cabecera == 'Set-Cookie':
@@ -113,7 +112,7 @@ class eGela:
             #########################################################
 
 
-            print("\n##### 3. PETICION --> obtener la pagina principal #####")
+            print("\n\n##### 3. PETICION --> obtener la pagina principal #####")
             metodo = 'GET'
             uri = uri_testsesion
             cabeceras = {'Host': 'egela.ehu.eus',
@@ -125,7 +124,7 @@ class eGela:
             respuesta = requests.request(metodo, uri, headers=cabeceras, data=cuerpo, allow_redirects=False)
             codigo = respuesta.status_code
             descripcion = respuesta.reason
-            print("\n\n++++++++ respuesta: ++++++++")
+            print("\n++++++++ respuesta: ++++++++")
             print(str(codigo) + " " + descripcion)
             for cabecera in respuesta.headers:
                 if cabecera == 'Location' or cabecera == 'Set-Cookie':
@@ -143,7 +142,7 @@ class eGela:
             time.sleep(1)
             #########################################################
 
-            print("\n##### 4. PETICION --> conectarse a la pagina principal de egela #####")
+            print("\n\n##### 4. PETICION --> conectarse a la pagina principal de egela #####")
             metodo = 'GET'
             uri = paginaPrincipal
             cabeceras = {'Host': 'egela.ehu.eus',
@@ -155,7 +154,7 @@ class eGela:
             respuesta = requests.request(metodo, uri, headers=cabeceras, data=cuerpo, allow_redirects=False)
             codigo = respuesta.status_code
             descripcion = respuesta.reason
-            print("\n\n++++++++ respuesta: ++++++++")
+            print("\n++++++++ respuesta: ++++++++")
             print(str(codigo) + " " + descripcion)
             for cabecera in respuesta.headers:
                 if cabecera == 'Location' or cabecera == 'Set-Cookie':

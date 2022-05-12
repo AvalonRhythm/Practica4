@@ -161,7 +161,8 @@ login_frame = tk.Frame(root, padx=10, pady=10)
 login_frame.pack(fill=tk.BOTH, expand=True)
 
 username = make_entry(login_frame, "LDAP:", 16)
-password = make_entry(login_frame, "Password:", 16, show="*")
+password = make_entry(login_frame, "Password:", 16)
+#password = make_entry(login_frame, "Password:", 16, show="*")
 password.bind("<Return>", check_credentials)
 
 button = tk.Button(login_frame, borderwidth=4, text="Login", width=10, pady=8, command=check_credentials)
