@@ -39,7 +39,7 @@ class Dropbox:
         lehenengo_lerroa = eskaera.decode('UTF8').split('\n')[0]
         aux_auth_code = lehenengo_lerroa.split(' ')[1]
         auth_code = aux_auth_code[7:].split('&')[0]
-        print ("\tauth_code: " + auth_code)
+
 
         # erabiltzaileari erantzun bat bueltatu
         http_response = "HTTP/1.1 200 OK\r\n\r\n" \
@@ -58,24 +58,25 @@ class Dropbox:
         params = {'response_type': 'code',
                   'client_id': app_key,
                   'redirect_uri': redirect_uri}
+        params_encoded = urllib.parse.urlencode(params)
 
-        params_encoded = urllib.urlencode(params)
+        #MANDAR AL NAVEGADOR LOS PARAMETROS PARA QUE ABRA UNA PESTAÑA
         webbrowser.open(uri + '?' + params_encoded)
 
-        print('/oauth2/authorize')
         auth_code = self.local_server()
-        print('auth_code: ' + auth_code)
+        print('auth_code -->: ' + auth_code)
 
         # Codigo de autorizacion para acceder al token
+        metodo = 'POST'
         uri = 'https://api.dropboxapi.com/oauth2/token'
         cabecera = {'Host:': 'api.dropboxapi.com',
                     'Content-Type': 'application/x-www-form-urlencoded'}
-        data = {'code': auth_code,
+        datos = {'code': auth_code,
                 'client_id': app_key,
                 'client_secret': app_secret,
                 'redirect_uri': redirect_uri,
                 'grant_type': 'authorization_code'}
-        respuesta = requests.post(uri, headers=cabecera, data=data, allow_redirects=False)
+        respuesta = requests.post(metodo, uri, headers=cabecera, data=datos, allow_redirects=False)
 
         status = respuesta.status_code
         print('Status: ' + str(status))
@@ -113,15 +114,22 @@ class Dropbox:
         self._files = helper.update_listbox2(msg_listbox, self._path, content_json)
 
     def transfer_file(self, file_path, file_data):
-        metodo="X"
+        #metodo="X"
         print("/upload")
         uri = 'https://content.dropboxapi.com/2/files/upload'
         # https://www.dropbox.com/developers/documentation/http/documentation#files-upload
-        cabeceras = {}
-        print("-- METODO UPLOAD --")
-        print(metodo + " --> " + uri)
+        dropbox_conf = {'path': file_path,
+                        'mode': 'add',
+                        'autoname': True,
+                        'mute': False}
+        dropbox_conf_json = json.dump(dropbox_conf)
 
-        respuesta = requests.request(metodo, uri, headers=cabeceras, allow_redirects=False)
+        cabecera = {'Host': 'api.dropboxapi.com',
+                    'Authorization': 'Bearer ' + self._access_token,
+                    'Content-Type': 'application/octet-stream',
+                    'Dropbox-API-Arg': dropbox_conf_json}        #print(metodo + " --> " + uri)
+
+        respuesta = requests.request(uri, headers=cabecera, allow_redirects=False)
         print("\n ++++++ respuesta +++++")
         print(str(respuesta.status_code) + " " + respuesta.reason)
 
