@@ -207,10 +207,10 @@ class eGela:
 
         messagebox.showinfo("INFORMACIÓN", "SE VAN A DESCARGAR TODOS LOS PDFs DE LA ASIGNATURA 'SISTEMAS WEB'")
 
-        print('tieneSisWeb'+tieneSisWeb)
+        print('tieneSisWeb'+str(tieneSisWeb))
         if tieneSisWeb==True: #si el alumno etá matriculado --> se descargan los pdfs
 
-            print("\n##### 5. PETICION --> acceder al curso de sistemas web #####")
+            print("\n\n##### 5. PETICION --> acceder al curso de sistemas web #####")
             metodo = 'GET'
             uri = cursoSisWeb
             cabeceras = {'Host': 'egela.ehu.eus',
@@ -222,10 +222,11 @@ class eGela:
             respuesta = requests.request(metodo, uri, headers=cabeceras, data=cuerpo, allow_redirects=False)
             codigo = respuesta.status_code
             descripcion = respuesta.reason
-            print("\n\n++++++++ respuesta: conectarse a SisWeb ++++++++")
+            print("\n++++++++ respuesta: conectarse a SisWeb ++++++++")
             print(str(codigo) + " " + descripcion)
             cuerpo = respuesta.content
-            # print(cuerpo)
+            print("cuerpo")
+            print(cuerpo)
 
 
             #--> CALCULAR EL NUMERO DE PDFS QUE HAY EN SISTEMAS WEB
@@ -238,10 +239,12 @@ class eGela:
                 if "pdf" in img:  # SI EL ICONO DE LA ACTIVIDAD CONTIENE LA PALABRA PDF --> EL ARCHIVO ES UN PDF
                     #ACTUALIZAMOS EL CONADOR DE PDFs
                     numeroDePDFs = numeroDePDFs+1
+                    print(str(numeroDePDFs))
 
             progress=0
             progress_var.set(progress) #inicializar la barra de progreso a 0
             progress_step = float(100 / numeroDePDFs) #calcular lo que sube la barra por cada pdf descargado
+            print(str(progress_step))
 
 
             # --> OBTENER EL PAR DE (nombrePDF, enlacePDF):
@@ -250,31 +253,37 @@ class eGela:
             for div in SisWebContent.find_all("div", class_="activityinstance"):
                 img = div.find("img").attrs['src']  # EXTRAER LA EL ICONO DE LA ACTIVIDAD
                 pdf = div.find("a")["href"]  # EXTRAER EL LINK DE LA CLAUSULA <a></a>
+                #print(str(img)+" "+str(pdf))
 
                 #OBTENER EL NOMBRE DEL PDF PARA GUARDAR PERO SIN LA ULTIMA PALABRA 'fitxategia'
                 nomPDF = str(div.find("span", class_="instancename").text).rsplit(' ',1)[0]
 
                 if "pdf" in img: #SI EL ICONO DE LA ACTIVIDAD CONTIENE LA PALABRA PDF --> EL ARCHIVO ES UN PDF
+                    print(nomPDF)
+                    print(str(pdf))
 
                     if "/" in nomPDF:  #QUITAR LAS '/' DE LOS NOMBRES QUE HACEN CONFLICTO CON EL DIRECTORIO
                         nomPDF=nomPDF.replace("/","-")
+                        #print(str(nomPDF)+" "+str(pdf))
+                        #print(nomPDF)
 
-                        nuevoPDF = {"pdf_name": nomPDF,
-                                   "pdf_link": pdf}
+                    nuevoPDF = {"pdf_name": nomPDF,
+                                "pdf_link": pdf}
 
-                        self._refs.append(nuevoPDF) #AÑADIR A LA LISTA EL NUEVO PDF
+                    self._refs.append(nuevoPDF) #AÑADIR A LA LISTA EL NUEVO PDF
 
-                        # INICIALIZA Y ACTUALIZAR BARRA DE PROGRESO
-                        # POR CADA PDF ANIADIDO EN self._refs
-                        progress += progress_step
-                        progress_var.set(progress)
-                        progress_bar.update()
-                        time.sleep(0.1)
+                    # INICIALIZA Y ACTUALIZAR BARRA DE PROGRESO
+                    # POR CADA PDF ANIADIDO EN self._refs
+                    progress += progress_step
+                    progress_var.set(progress)
+                    progress_bar.update()
+                    time.sleep(0.1)
 
         else:
             messagebox.showinfo("INFORMACIÓN", "NO ESTÁS MATRICULADO EN 'SISTEMAS WEB'")
 
         popup.destroy()
+        print("wtf")
         print(self._refs)
         return self._refs
 
