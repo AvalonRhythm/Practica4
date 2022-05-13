@@ -203,10 +203,11 @@ class eGela:
             if nombreCurso == "Sistemas Web":
                 tieneSisWeb=True
                 cursoSisWeb=link
+                print(cursoSisWeb)
 
         messagebox.showinfo("INFORMACIÓN", "SE VAN A DESCARGAR TODOS LOS PDFs DE LA ASIGNATURA 'SISTEMAS WEB'")
 
-
+        print('tieneSisWeb'+tieneSisWeb)
         if tieneSisWeb==True: #si el alumno etá matriculado --> se descargan los pdfs
 
             print("\n##### 5. PETICION --> acceder al curso de sistemas web #####")
@@ -221,11 +222,8 @@ class eGela:
             respuesta = requests.request(metodo, uri, headers=cabeceras, data=cuerpo, allow_redirects=False)
             codigo = respuesta.status_code
             descripcion = respuesta.reason
-            print("\n\n++++++++ respuesta: ++++++++")
+            print("\n\n++++++++ respuesta: conectarse a SisWeb ++++++++")
             print(str(codigo) + " " + descripcion)
-            for cabecera in respuesta.headers:
-                if cabecera == 'Location' or cabecera == 'Set-Cookie':
-                    print(cabecera + ": " + respuesta.headers[cabecera])
             cuerpo = respuesta.content
             # print(cuerpo)
 
