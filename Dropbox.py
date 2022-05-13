@@ -67,16 +67,17 @@ class Dropbox:
         print('auth_code -->: ' + auth_code)
 
         # Codigo de autorizacion para acceder al token
-        metodo = 'POST'
         uri = 'https://api.dropboxapi.com/oauth2/token'
-        cabecera = {'Host:': 'api.dropboxapi.com',
-                    'Content-Type': 'application/x-www-form-urlencoded'}
+        cabecera = {'Content-Type': 'application/x-www-form-urlencoded'}
+
         datos = {'code': auth_code,
-                'client_id': app_key,
-                'client_secret': app_secret,
-                'redirect_uri': redirect_uri,
-                'grant_type': 'authorization_code'}
-        respuesta = requests.post(metodo, uri, headers=cabecera, data=datos, allow_redirects=False)
+                 'client_id': app_key,
+                 'client_secret': app_secret,
+                 'redirect_uri': redirect_uri,
+                 'grant_type': 'authorization_code'}
+
+        respuesta = requests.post(uri, headers=cabecera, data=datos, allow_redirects=False)
+
 
         status = respuesta.status_code
         print('Status: ' + str(status))
@@ -84,7 +85,7 @@ class Dropbox:
         print('Content: \n' + str(content))
         content_json = json.loads(content)
         access_token = content_json['access_token']
-        print('access_token: ' + access_token)
+        print('access_token --> ' + access_token)
 
         self._access_token = access_token
         self._root.destroy()
@@ -104,6 +105,7 @@ class Dropbox:
         cabecera = {'Host': 'api.dropboxapi.com',
                     'Authorization': 'Bearer ' + self._access_token,
                     'Content-Type': 'application/json'}
+
         respuesta = requests.post(uri, headers=cabecera, data=data_encoded, allow_redirects=False)
         status = respuesta.status_code
         print('Status: ' + str(status))

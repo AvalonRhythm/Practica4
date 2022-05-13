@@ -161,8 +161,8 @@ login_frame = tk.Frame(root, padx=10, pady=10)
 login_frame.pack(fill=tk.BOTH, expand=True)
 
 username = make_entry(login_frame, "LDAP:", 16)
-password = make_entry(login_frame, "Password:", 16)
-#password = make_entry(login_frame, "Password:", 16, show="*")
+#password = make_entry(login_frame, "Password:", 16)
+password = make_entry(login_frame, "Password:", 16, show="*")
 password.bind("<Return>", check_credentials)
 
 button = tk.Button(login_frame, borderwidth=4, text="Login", width=10, pady=8, command=check_credentials)
@@ -232,7 +232,7 @@ msg_listbox1 = make_listbox(messages_frame1)
 msg_listbox1.bind('<<ListboxSelect>>', on_selecting1)
 msg_listbox1.pack(side=tk.LEFT, fill=tk.BOTH)
 #messages_frame1.pack()
-messages_frame1.grid(row=1, column=0, ipadx=10, ipady=10, padx=2, pady=2) #
+messages_frame1.grid(row=1, column=0, ipadx=10, ipady=10, padx=2, pady=2)
 
 # Frame con boton >>> (1,1)
 frame1 = tk.Frame(newroot)

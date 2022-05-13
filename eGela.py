@@ -279,7 +279,7 @@ class eGela:
         popup.destroy()
         print(self._refs)
 
-
+'''
     def get_pdf(self, selection):
 
         print("\n##### 6. PETICION --> obtener el pdf #####")
@@ -327,3 +327,4 @@ class eGela:
         # print(cuerpo)
 
         return pdf_name, pdf_content
+'''
