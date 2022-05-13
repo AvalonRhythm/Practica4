@@ -145,10 +145,11 @@ class Dropbox:
                     'Authorization': 'Bearer ' + self._access_token,
                     'Content-Type': 'application/json'}
 
+        print(file_path)
         data = {'path': file_path}
         data_encoded = json.dumps(data)
 
-        respuesta = requests.delete(uri, headers=cabecera, data=data_encoded, allow_redirects=False)
+        respuesta = requests.post(uri, headers=cabecera, data=data_encoded, allow_redirects=False)
         print("\n ++++++ respuesta +++++")
         print(str(respuesta.status_code) + " " + respuesta.reason)
 
@@ -168,3 +169,6 @@ class Dropbox:
         respuesta = requests.put(uri, headers=cabecera, data=data_encoded, allow_redirects=False)
         print("\n ++++++ respuesta +++++")
         print(str(respuesta.status_code) + " " + respuesta.reason)
+
+        Dropbox.transfer_file(self, path+"/kk.txt", '')
+        Dropbox.delete_file(self, path + "/kk.txt")
