@@ -336,4 +336,4 @@ class eGela:
         pdf_content = respuesta.content
         # print(cuerpo)
 
-        return pdf_name, pdf_content
+        return pdf_name+".pdf", pdf_content
