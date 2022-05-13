@@ -53,6 +53,7 @@ class Dropbox:
 
         return auth_code
 
+
     def do_oauth(self):
         uri = 'https://www.dropbox.com/oauth2/authorize'
         params = {'response_type': 'code',
@@ -60,7 +61,7 @@ class Dropbox:
                   'redirect_uri': redirect_uri}
         params_encoded = urllib.parse.urlencode(params)
 
-        #MANDAR AL NAVEGADOR LOS PARAMETROS PARA QUE ABRA UNA PESTAÑA
+        #MANDAR AL NAVEGADOR LOS PARAMETROS PARA QUE LO ABRA UNA PESTAÑA
         webbrowser.open(uri + '?' + params_encoded)
 
         auth_code = self.local_server()
@@ -81,8 +82,9 @@ class Dropbox:
 
         status = respuesta.status_code
         print('Status: ' + str(status))
+
+        #OBTENER LA PAGINA --> PASARLA A JSON --> EXTRAER ACCESS TOKEN
         content = respuesta.text
-        print('Content: \n' + str(content))
         content_json = json.loads(content)
         access_token = content_json['access_token']
         print('access_token --> ' + access_token)
@@ -107,16 +109,14 @@ class Dropbox:
                     'Content-Type': 'application/json'}
 
         respuesta = requests.post(uri, headers=cabecera, data=data_encoded, allow_redirects=False)
-        status = respuesta.status_code
-        print('Status: ' + str(status))
-        content = respuesta.text
-        print('Content: \n' + str(content))
-        content_json = json.loads(content)
+        print('Status: ' + str(respuesta.status_code))
 
-        self._files = helper.update_listbox2(msg_listbox, self._path, content_json)
+        print('Content: \n' + str(respuesta.text))
+        contenido_json = json.loads(respuesta.text)
+
+        self._files = helper.update_listbox2(msg_listbox, self._path, contenido_json)
 
     def transfer_file(self, file_path, file_data):
-        #metodo="X"
         print("/upload")
         uri = 'https://content.dropboxapi.com/2/files/upload'
         # https://www.dropbox.com/developers/documentation/http/documentation#files-upload
@@ -129,7 +129,8 @@ class Dropbox:
         cabecera = {'Host': 'api.dropboxapi.com',
                     'Authorization': 'Bearer ' + self._access_token,
                     'Content-Type': 'application/octet-stream',
-                    'Dropbox-API-Arg': dropbox_conf_json}        #print(metodo + " --> " + uri)
+                    'Dropbox-API-Arg': dropbox_conf_json}
+        #print(metodo + " --> " + uri)
 
         respuesta = requests.request(uri, headers=cabecera, allow_redirects=False)
         print("\n ++++++ respuesta +++++")

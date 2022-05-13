@@ -278,6 +278,8 @@ class eGela:
 
         popup.destroy()
         print(self._refs)
+        return self._refs
+
 
 '''
     def get_pdf(self, selection):
