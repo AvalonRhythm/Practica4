@@ -40,22 +40,26 @@ def progress(tipo, title):
     return popup, progress_var, progress_bar
 
 def update_listbox2(msg_listbox, path, edukia_json):
-    msg_listbox = msg_listbox
-    msg_listbox.delete(0, tk.END)
+    try:
+        msg_listbox = msg_listbox
+        msg_listbox.delete(0, tk.END)
 
-    files = []
-    if path != '/':
-        files.append({'id': 'parent',
-                            'name': "..",
-                            '.tag': "folder"})
-        msg_listbox.insert(tk.END, "..")
-        msg_listbox.itemconfigure(tk.END, background="red")
-    for each in edukia_json['entries']:
-        msg_listbox.insert(tk.END, each['name'])
-        if each['.tag'] == "folder":
-            msg_listbox.itemconfigure(tk.END, background="green")
-        files.append({'id': each['id'],
-                            'name': each['name'],
-                            '.tag': each['.tag']})
+        files = []
+        if path != '/':
+            files.append({'id': 'parent',
+                          'name': "..",
+                          '.tag': "folder"})
+            msg_listbox.insert(tk.END, "..")
+            msg_listbox.itemconfigure(tk.END, background="red")
+        for each in edukia_json['entries']:
+            msg_listbox.insert(tk.END, each['name'])
+            if each['.tag'] == "folder":
+                msg_listbox.itemconfigure(tk.END, background="green")
+            files.append({'id': each['id'],
+                          'name': each['name'],
+                          '.tag': each['.tag']})
+    except:
+        print('bubalunga')
+
 
     return files
