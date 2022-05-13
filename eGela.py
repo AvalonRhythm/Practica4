@@ -264,8 +264,8 @@ class eGela:
 
                     if "/" in nomPDF:  #QUITAR LAS '/' DE LOS NOMBRES QUE HACEN CONFLICTO CON EL DIRECTORIO
                         nomPDF=nomPDF.replace("/","-")
-                        #print(str(nomPDF)+" "+str(pdf))
-                        #print(nomPDF)
+                    if " " in nomPDF:  # QUITAR LAS '/' DE LOS NOMBRES QUE HACEN CONFLICTO CON EL DIRECTORIO
+                        nomPDF = nomPDF.replace(" ", "-")
 
                     nuevoPDF = {"pdf_name": nomPDF,
                                 "pdf_link": pdf}
