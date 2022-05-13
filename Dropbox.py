@@ -133,12 +133,12 @@ class Dropbox:
                     'Dropbox-API-Arg': dropbox_conf_json}
         #print(metodo + " --> " + uri)
 
-        respuesta = requests.request(uri, headers=cabecera, data=file_data, allow_redirects=False)
+        respuesta = requests.post(uri, headers=cabecera, data=file_data, allow_redirects=False)
         print("\n ++++++ respuesta +++++")
         print(str(respuesta.status_code) + " " + respuesta.reason)
 
     def delete_file(self, file_path):
-        print("/delete_file")
+        print("/delete_file" + file_path)
         uri = 'https://api.dropboxapi.com/2/files/delete_v2'
         # https://www.dropbox.com/developers/documentation/http/documentation#files-delete
         #############################################
@@ -147,7 +147,7 @@ class Dropbox:
         #############################################
 
     def create_folder(self, path):
-        print("/create_folder")
+        print("/create_folder" + path)
        # https://www.dropbox.com/developers/documentation/http/documentation#files-create_folder
         #############################################
         # RELLENAR CON CODIGO DE LA PETICION HTTP
