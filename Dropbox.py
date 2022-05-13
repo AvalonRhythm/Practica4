@@ -117,22 +117,23 @@ class Dropbox:
         self._files = helper.update_listbox2(msg_listbox, self._path, contenido_json)
 
     def transfer_file(self, file_path, file_data):
-        print("/upload")
+        print("/upload" + file_path)
         uri = 'https://content.dropboxapi.com/2/files/upload'
         # https://www.dropbox.com/developers/documentation/http/documentation#files-upload
         dropbox_conf = {'path': file_path,
                         'mode': 'add',
-                        'autoname': True,
+                        'autorename': True,
                         'mute': False}
-        dropbox_conf_json = json.dump(dropbox_conf)
 
-        cabecera = {'Host': 'api.dropboxapi.com',
+        dropbox_conf_json = json.dumps(dropbox_conf)
+
+        cabecera = {'Host': 'content.dropboxapi.com',
                     'Authorization': 'Bearer ' + self._access_token,
                     'Content-Type': 'application/octet-stream',
                     'Dropbox-API-Arg': dropbox_conf_json}
         #print(metodo + " --> " + uri)
 
-        respuesta = requests.request(uri, headers=cabecera, allow_redirects=False)
+        respuesta = requests.request(uri, headers=cabecera, data=file_data, allow_redirects=False)
         print("\n ++++++ respuesta +++++")
         print(str(respuesta.status_code) + " " + respuesta.reason)
 
