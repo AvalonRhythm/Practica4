@@ -73,7 +73,7 @@ def delete_files():
             path = "/" + dropbox._files[each]['name']
         else:
             path = dropbox._path + "/" + dropbox._files[each]['name']
-            print (path)
+            print(path)
         dropbox.delete_file(path)
 
         progress += progress_step

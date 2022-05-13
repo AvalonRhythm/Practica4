@@ -136,7 +136,6 @@ class Dropbox:
         print("\n ++++++ respuesta +++++")
         print(str(respuesta.status_code) + " " + respuesta.reason)
 
-
     def delete_file(self, file_path):
         print("/delete_file" + file_path)
         uri = 'https://api.dropboxapi.com/2/files/delete_v2'
@@ -153,11 +152,19 @@ class Dropbox:
         print("\n ++++++ respuesta +++++")
         print(str(respuesta.status_code) + " " + respuesta.reason)
 
-
     def create_folder(self, path):
         print("/create_folder" + path)
+        uri = 'https://api.dropboxapi.com/2/files/delete_v2'
        # https://www.dropbox.com/developers/documentation/http/documentation#files-create_folder
-        #############################################
-        # RELLENAR CON CODIGO DE LA PETICION HTTP
-        # Y PROCESAMIENTO DE LA RESPUESTA HTTP
-        #############################################
+
+        cabecera = {'Host': 'api.dropboxapi.com',
+                    'Authorization': 'Bearer ' + self._access_token,
+                    'Content-Type': 'application/json'}
+
+        data = {'autorename': False,
+                'path': path}
+        data_encoded = json.dumps(data)
+
+        respuesta = requests.put(uri, headers=cabecera, data=data_encoded, allow_redirects=False)
+        print("\n ++++++ respuesta +++++")
+        print(str(respuesta.status_code) + " " + respuesta.reason)
